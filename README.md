@@ -170,11 +170,11 @@ ai-stock-analyzer/
 │
 ├── stock_server.py          # Flask backend server
 ├── static/
-├── ├── index.html              # Web interface
-├── ├── js/
-├── ├── ├──script.js               # Frontend JavaScript (Chart.js integration)
-├── ├── css/
-├── ├── ├──style.css               # Styling
+│   ├── index.html              # Web interface
+│   ├── js/
+│   │   └── script.js               # Frontend JavaScript (Chart.js integration)
+│   └── css/
+│       └── style.css               # Styling
 ├── requirements.txt        # Python dependencies
 ├── .env.example           # Environment variables template
 ├── .gitignore             # Git ignore file
