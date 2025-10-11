@@ -64,7 +64,7 @@ A comprehensive stock analysis tool that combines technical indicators, real-tim
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/ai-stock-analyzer.git
+git clone https://github.com/mklljj/ai-stock-analyzer.git
 cd ai-stock-analyzer
 ```
 
@@ -302,7 +302,7 @@ Project Link: [https://github.com/mklljj/ai-stock-analyzer](https://github.com/m
 
 If you find this project useful, please consider giving it a star! ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/ai-stock-analyzer&type=Date)](https://star-history.com/#YOUR_USERNAME/ai-stock-analyzer&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=mklljj/ai-stock-analyzer&type=Date)](https://star-history.com/#mklljj/ai-stock-analyzer&Date)
 
 ---
 
