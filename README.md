@@ -292,9 +292,9 @@ This tool is for **educational and informational purposes only**. It should not 
 
 ## 📧 Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_twitter) - your.email@example.com
+Your Name - Bojian Zhou - neofastio@gmail.com
 
-Project Link: [https://github.com/YOUR_USERNAME/ai-stock-analyzer](https://github.com/YOUR_USERNAME/ai-stock-analyzer)
+Project Link: [https://github.com/mklljj/ai-stock-analyzer](https://github.com/mklljj/ai-stock-analyzer)
 
 ## 🌟 Star History
 
