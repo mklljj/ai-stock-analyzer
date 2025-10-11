@@ -292,7 +292,7 @@ This tool is for **educational and informational purposes only**. It should not 
 
 ## 📧 Contact
 
-Your Name - Bojian Zhou - neofastio@gmail.com
+Bojian Zhou - neofastio@gmail.com
 
 LinkedIn: [https://www.linkedin.com/in/bojian-zhou-62391637b/]
 
