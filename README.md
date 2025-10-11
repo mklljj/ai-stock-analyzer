@@ -294,6 +294,8 @@ This tool is for **educational and informational purposes only**. It should not 
 
 Your Name - Bojian Zhou - neofastio@gmail.com
 
+LinkedIn: [https://www.linkedin.com/in/bojian-zhou-62391637b/]
+
 Project Link: [https://github.com/mklljj/ai-stock-analyzer](https://github.com/mklljj/ai-stock-analyzer)
 
 ## 🌟 Star History
