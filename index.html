@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analyzer AI with Sentiment</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* Chart Section Styles */
+        .chart-section {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .chart-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .chart-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .chart-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-color.volume {
+            height: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+            
+            .chart-controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Stock Analysis with Gemini AI</h1>
+        
+        <div class="form-container">
+            <input type="text" id="stockCode" placeholder="Enter Stock Code (e.g., AAPL, NVDA, TSLA)">
+            <select id="marketType">
+                <option value="US">US Market</option>
+                <option value="HK">Hong Kong (HK)</option>
+                <option value="A-share">China (A-Share)</option>
+            </select>
+            <label class="checkbox-container">
+                <input type="checkbox" id="includeSentiment" checked>
+                <span>Include Sentiment Analysis</span>
+            </label>
+            <button id="analyzeBtn">Analyze Stock</button>
+        </div>
+        
+        <div class="warning-box">
+            ⚠️ <strong>Note:</strong> Due to data provider limitations, only US stocks can present real-time intraday trading data.
+        </div>
+
+        <div id="loader" class="hidden">
+            <div class="spinner"></div>
+            <p>Analyzing... This may take 10-20 seconds</p>
+        </div>
+
+        <div id="results" class="hidden">
+            <h2>📊 Analysis Results</h2>
+            
+            <!-- Stock Data Section -->
+            <div class="section">
+                <h3>Stock Information</h3>
+                <div class="stock-data-grid">
+                    <div class="data-card">
+                        <label>Ticker</label>
+                        <span id="ticker" class="value">-</span>
+                    </div>
+                    <div class="data-card">
+                        <label>Current Price</label>
+                        <span id="currentPrice" class="value">-</span>
+                    </div>
+                    <div class="data-card">
+                        <label>Price Change</label>
+                        <span id="priceChange" class="value">-</span>
+                    </div>
+                    <div class="data-card">
+                        <label>Trend</label>
+                        <span id="trend" class="value trend-badge">-</span>
+                    </div>
+                    <div class="data-card">
+                        <label>RSI</label>
+                        <span id="rsi" class="value">-</span>
+                    </div>
+                    <div class="data-card">
+                        <label>Volume Ratio</label>
+                        <span id="volume" class="value">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Chart Section -->
+            <div class="section chart-section">
+                <h3>📈 Price Chart (5-Minute Intervals)</h3>
+                <div class="chart-controls">
+                    <button class="chart-btn active" data-period="all">All Data</button>
+                    <button class="chart-btn" data-period="1h">Last 1 Hour</button>
+                    <button class="chart-btn" data-period="3h">Last 3 Hours</button>
+                    <button class="chart-btn" data-period="today">Today</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="priceChart"></canvas>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #667eea;"></span>
+                        <span>Price</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #ffc107;"></span>
+                        <span>SMA(5)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #28a745;"></span>
+                        <span>SMA(20)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color volume" style="background: rgba(102, 126, 234, 0.3);"></span>
+                        <span>Volume</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sentiment Section (conditionally displayed) -->
+            <div id="sentimentSection" class="section hidden">
+                <h3>📰 Sentiment Analysis</h3>
+                <div class="sentiment-container">
+                    <div class="sentiment-score-box">
+                        <div class="sentiment-label">Overall Sentiment</div>
+                        <div id="sentimentLabel" class="sentiment-value">-</div>
+                        <div class="sentiment-score-bar">
+                            <div id="sentimentBar" class="sentiment-bar-fill"></div>
+                        </div>
+                        <div id="sentimentScore" class="sentiment-score-text">Score: 0</div>
+                    </div>
+                    <div class="sentiment-details">
+                        <h4>Key Factors:</h4>
+                        <pre id="sentimentAnalysis" class="sentiment-text">-</pre>
+                    </div>
+                </div>
+                <div class="alignment-indicator">
+                    <span id="alignmentIcon">📊</span>
+                    <span id="alignmentText">Checking technical-sentiment alignment...</span>
+                </div>
+            </div>
+
+            <!-- AI Analysis Section -->
+            <div class="section">
+                <h3>🤖 AI-Powered Analysis</h3>
+                <div class="analysis-type-badge" id="analysisTypeBadge">
+                    <span id="analysisType">Technical Analysis</span>
+                </div>
+                <pre id="aiAnalysis" class="ai-analysis-text">Loading analysis...</pre>
+            </div>
+
+            <!-- Model Info -->
+            <div class="model-info">
+                <small>
+                    <span id="modelProvider">Provider: Google Gemini</span> | 
+                    <span id="modelName">Model: gemini-2.5-flash</span> | 
+                    <span id="tokensUsed">Tokens: -</span>
+                </small>
+            </div>
+        </div>
+
+        <div id="errorDisplay" class="error-box hidden">
+            <strong>⚠️ Error:</strong>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
