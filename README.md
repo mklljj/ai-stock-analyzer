@@ -169,9 +169,12 @@ curl http://localhost:8080/health
 ai-stock-analyzer/
 │
 ├── stock_server.py          # Flask backend server
-├── index.html              # Web interface
-├── script.js               # Frontend JavaScript (Chart.js integration)
-├── style.css               # Styling
+├── static/
+├── ├── index.html              # Web interface
+├── ├── js/
+├── ├── ├──script.js               # Frontend JavaScript (Chart.js integration)
+├── ├── css/
+├── ├── ├──style.css               # Styling
 ├── requirements.txt        # Python dependencies
 ├── .env.example           # Environment variables template
 ├── .gitignore             # Git ignore file
